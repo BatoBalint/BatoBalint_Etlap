@@ -8,6 +8,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 public class WelcomeController {
 
@@ -25,6 +27,8 @@ public class WelcomeController {
     private TableColumn<Etel, String> categoryCol;
     @FXML
     private TableColumn<Etel, Integer> priceCol;
+    private DB db;
+    private List<Etel> etelList;
 
     @FXML
     public void newFoodBtnClick() {
@@ -47,13 +51,27 @@ public class WelcomeController {
 
     }
 
+    @FXML
+    private void menuTableClicked() {
+        descriptionTxt.setText(menuTable.getSelectionModel().getSelectedItem().getDesc());
+    }
+
     public void initialize() {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        Etel e = new Etel("Leves", "leves", "fincsamincsa", 650);
-        menuTable.getItems().add(e);
+        try {
+            db = new DB();
+            etelList = db.getEtlap();
+            for (Etel e: etelList) {
+                menuTable.getItems().add(e);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        /*Etel e = new Etel(-1, "Leves", "leves", "fincsamincsa", 650);
+        menuTable.getItems().add(e);*/
     }
 
     private void test() {

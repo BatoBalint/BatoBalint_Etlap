@@ -19,7 +19,7 @@
       </HBox>
       <HBox spacing="10.0">
          <children>
-            <TableView fx:id="menuTable" prefHeight="300.0">
+            <TableView fx:id="menuTable" prefHeight="300.0" onMouseClicked="#menuTableClicked">
               <columns>
                 <TableColumn fx:id="nameCol" prefWidth="100.0" text="Név" />
                 <TableColumn fx:id="categoryCol" prefWidth="125.0" text="Kategória" />

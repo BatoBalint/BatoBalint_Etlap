@@ -1,6 +1,7 @@
 package com.example.etlap;
 
 public class Etel {
+    private  int id;
     private String name;
     private String category;
     private String desc;
@@ -38,7 +39,8 @@ public class Etel {
         this.price = price;
     }
 
-    public Etel(String name, String category, String desc, int price) {
+    public Etel(int id, String name, String category, String desc, int price) {
+        this.id = id;
         this.name = name;
         this.category = category;
         this.desc = desc;
