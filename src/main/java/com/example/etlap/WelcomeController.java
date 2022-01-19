@@ -39,7 +39,6 @@ public class WelcomeController {
             scene = new Scene(fxmlLoader.load());
             stage.setTitle("Étel felvétel");
             stage.setScene(scene);
-            stage.setOnCloseRequest(windowEvent -> {test();});
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,8 +69,6 @@ public class WelcomeController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        /*Etel e = new Etel(-1, "Leves", "leves", "fincsamincsa", 650);
-        menuTable.getItems().add(e);*/
     }
 
     private void test() {

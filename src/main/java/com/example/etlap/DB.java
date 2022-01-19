@@ -29,7 +29,7 @@ public class DB {
         return etelList;
     }
 
-    public int addMovie(String nev, String kategoria, String leiras, int ar) throws SQLException {
+    public int addEtel(String nev, String kategoria, String leiras, int ar) throws SQLException {
         String sql = "INSERT INTO etlap (nev, kategoria, leiras, ar) VALUES (?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, nev);

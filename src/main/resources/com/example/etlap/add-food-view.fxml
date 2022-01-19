@@ -17,7 +17,10 @@
             <Insets bottom="10.0" />
          </VBox.margin></TextField>
       <Label layoutX="20.0" layoutY="74.0" text="Leírás" />
-      <TextField fx:id="descInput" layoutX="20.0" layoutY="92.0" prefWidth="300.0" />
+      <TextField fx:id="descInput" layoutX="20.0" layoutY="92.0" prefWidth="300.0">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin></TextField>
       <Label layoutX="20.0" layoutY="82.0" text="Ár" />
       <Spinner fx:id="priceInput" prefWidth="300.0">
          <VBox.margin>
