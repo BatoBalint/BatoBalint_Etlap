@@ -40,15 +40,15 @@ public class DB {
         return stmt.executeUpdate();
     }
 
-    /*public boolean movieDelete(int id) throws SQLException {
-        String sql = "DELETE FROM filmek WHERE id = ?";
+    public boolean deleteEtel(int id) throws SQLException {
+        String sql = "DELETE FROM etlap WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, id);
         int affectedLines = stmt.executeUpdate();
         return affectedLines == 1;
     }
 
-    public boolean movieEdit(Movie newMovie) throws SQLException {
+    /*public boolean movieEdit(Movie newMovie) throws SQLException {
         String sql = "UPDATE filmek SET (title = ?, category = ?, length = ?, rating = ?) WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, newMovie.getTitle());

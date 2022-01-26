@@ -2,13 +2,11 @@ package com.example.etlap;
 
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
-import javafx.scene.input.InputEvent;
-
-import java.sql.SQLException;
+import javafx.stage.Stage;
 
 public class AddFoodController {
     @FXML
-    private Spinner priceInput;
+    private Spinner<Integer> priceInput;
     @FXML
     private TextField categoryInput;
     @FXML
@@ -17,6 +15,10 @@ public class AddFoodController {
     private Button addBtn;
     @FXML
     private TextField descInput;
+
+    public void initialize() {
+        priceInput.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999));
+    }
 
     @FXML
     public void addBtnClick() {
@@ -28,7 +30,11 @@ public class AddFoodController {
                 String category = categoryInput.getText();
                 String desc = descInput.getText();
                 int price = Integer.parseInt(priceInput.getValue().toString());
-                db.addEtel(name, category, desc, price);
+                int affectedRows = db.addEtel(name, category, desc, price);
+                if(affectedRows == 1) {
+                    Stage stage = (Stage) addBtn.getScene().getWindow();
+                    stage.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -36,7 +42,9 @@ public class AddFoodController {
     }
 
     private void hiba(String hibak) {
-        new Alert(Alert.AlertType.ERROR, hibak, ButtonType.CLOSE).show();
+        if (hibak.length() > 0) {
+            new Alert(Alert.AlertType.ERROR, hibak, ButtonType.CLOSE).show();
+        }
     }
 
     private boolean checkInput() {

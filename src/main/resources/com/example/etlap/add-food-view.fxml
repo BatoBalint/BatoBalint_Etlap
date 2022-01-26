@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.etlap.AddFoodController">
    <children>
       <Label text="Név" />
@@ -22,7 +23,7 @@
             <Insets bottom="10.0" />
          </VBox.margin></TextField>
       <Label layoutX="20.0" layoutY="82.0" text="Ár" />
-      <Spinner fx:id="priceInput" prefWidth="300.0">
+      <Spinner fx:id="priceInput" prefWidth="300.0" editable="true">
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>

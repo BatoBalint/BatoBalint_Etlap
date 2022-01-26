@@ -1,15 +1,18 @@
 package com.example.etlap;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class WelcomeController {
 
@@ -39,6 +42,8 @@ public class WelcomeController {
             scene = new Scene(fxmlLoader.load());
             stage.setTitle("Étel felvétel");
             stage.setScene(scene);
+            stage.setOnCloseRequest(windowEvent -> loadDataToTable());
+            stage.setOnHiding(windowEvent -> loadDataToTable());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,7 +52,25 @@ public class WelcomeController {
 
     @FXML
     public void deleteBtnClick() {
-
+        int selectedIndex = menuTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            new Alert(Alert.AlertType.NONE, "Elöbb válasz ki egy ételt", ButtonType.CLOSE).show();
+        } else {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Biztos hogy törölni szeretné az ételt? (" +
+                    menuTable.getSelectionModel().getSelectedItem().getName() +
+                    ")");
+            confirm.setTitle("Étel törlése");
+            Optional<ButtonType> result = confirm.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                try {
+                    db.deleteEtel(menuTable.getSelectionModel().getSelectedItem().getId());
+                    loadDataToTable();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @FXML
@@ -60,9 +83,14 @@ public class WelcomeController {
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
+        loadDataToTable();
+    }
+
+    private void loadDataToTable() {
         try {
             db = new DB();
             etelList = db.getEtlap();
+            menuTable.getItems().clear();
             for (Etel e: etelList) {
                 menuTable.getItems().add(e);
             }
