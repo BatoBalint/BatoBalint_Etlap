@@ -49,7 +49,7 @@ public class DB {
     }
 
     public boolean percentageChange(int precentage) throws SQLException {
-        String sql = "UPDATE etlap SET (ar = ar * ((100 + ?) / 100))";
+        String sql = "UPDATE etlap SET ar = ar * ((100 + ?) / 100)";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, precentage);
         int affectedLines = stmt.executeUpdate();
@@ -57,7 +57,7 @@ public class DB {
     }
 
     public boolean hufChange(int huf) throws SQLException {
-        String sql = "UPDATE etlap SET (ar = ar + ?)";
+        String sql = "UPDATE etlap SET ar = ar + ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, huf);
         int affectedLines = stmt.executeUpdate();

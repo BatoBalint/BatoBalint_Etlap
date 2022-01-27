@@ -79,7 +79,7 @@ public class WelcomeController {
     private void percentageBtnClick() {
         try {
             boolean ok = db.percentageChange(percentageSpinner.getValue());
-            if (!ok) {
+            if (ok) {
                 new Alert(Alert.AlertType.ERROR, "Valami okbol fogva nem sikerült frissiteni az adatokat", ButtonType.CLOSE).show();
             } else {
                 loadDataToTable();
@@ -94,7 +94,7 @@ public class WelcomeController {
     private void hufBtnClick() {
         try {
             boolean ok = db.hufChange(hufSpinner.getValue());
-            if (!ok) {
+            if (ok) {
                 new Alert(Alert.AlertType.ERROR, "Valami okbol fogva nem sikerült frissiteni az adatokat", ButtonType.CLOSE).show();
             } else {
                 loadDataToTable();
