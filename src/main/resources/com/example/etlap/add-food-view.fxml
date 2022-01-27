@@ -4,7 +4,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.etlap.AddFoodController">
    <children>
       <Label text="Név" />
@@ -13,17 +12,18 @@
             <Insets bottom="10.0" />
          </VBox.margin></TextField>
       <Label layoutX="20.0" layoutY="20.0" text="Kategória" />
-      <TextField fx:id="categoryInput" layoutX="20.0" layoutY="47.0" prefWidth="300.0">
+      <ComboBox fx:id="categoryInput" prefWidth="300.0">
          <VBox.margin>
             <Insets bottom="10.0" />
-         </VBox.margin></TextField>
+         </VBox.margin>
+      </ComboBox>
       <Label layoutX="20.0" layoutY="74.0" text="Leírás" />
-      <TextField fx:id="descInput" layoutX="20.0" layoutY="92.0" prefWidth="300.0">
+      <TextArea fx:id="descInput" layoutX="20.0" layoutY="92.0" prefHeight="100.0" prefWidth="300.0">
          <VBox.margin>
             <Insets bottom="10.0" />
-         </VBox.margin></TextField>
+         </VBox.margin></TextArea>
       <Label layoutX="20.0" layoutY="82.0" text="Ár" />
-      <Spinner fx:id="priceInput" prefWidth="300.0" editable="true">
+      <Spinner fx:id="priceInput" editable="true" prefWidth="300.0">
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>

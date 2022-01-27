@@ -1,5 +1,6 @@
 package com.example.etlap;
 
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
@@ -8,16 +9,20 @@ public class AddFoodController {
     @FXML
     private Spinner<Integer> priceInput;
     @FXML
-    private TextField categoryInput;
+    private ComboBox<String> categoryInput;
     @FXML
     private TextField nameInput;
     @FXML
     private Button addBtn;
     @FXML
-    private TextField descInput;
+    private TextArea descInput;
 
     public void initialize() {
         priceInput.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999));
+
+        categoryInput.getItems().add("előétel");
+        categoryInput.getItems().add("főétel");
+        categoryInput.getItems().add("desszert");
     }
 
     @FXML
@@ -27,7 +32,7 @@ public class AddFoodController {
             try {
                 DB db = new DB();
                 String name = nameInput.getText();
-                String category = categoryInput.getText();
+                String category = categoryInput.getSelectionModel().getSelectedItem();
                 String desc = descInput.getText();
                 int price = Integer.parseInt(priceInput.getValue().toString());
                 int affectedRows = db.addEtel(name, category, desc, price);
@@ -55,7 +60,7 @@ public class AddFoodController {
             if (hibak.length() != 0) hibak += "\n";
             hibak += "A nev nem lehet ures";
         }
-        if (categoryInput.getText().isEmpty()) {
+        if (categoryInput.getSelectionModel().getSelectedIndex() == -1) {
             error = true;
             if (hibak.length() != 0) hibak += "\n";
             hibak += "A kategoria nem lehet ures";
@@ -67,5 +72,9 @@ public class AddFoodController {
         }
         hiba(hibak);
         return !error;
+    }
+
+    public void menuItemClick(ActionEvent actionEvent) {
+
     }
 }
