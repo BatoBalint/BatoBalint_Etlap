@@ -48,6 +48,22 @@ public class DB {
         return affectedLines == 1;
     }
 
+    public boolean percentageChange(int precentage) throws SQLException {
+        String sql = "UPDATE etlap SET (ar = ar * ((100 + ?) / 100))";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, precentage);
+        int affectedLines = stmt.executeUpdate();
+        return affectedLines == 1;
+    }
+
+    public boolean hufChange(int huf) throws SQLException {
+        String sql = "UPDATE etlap SET (ar = ar + ?)";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, huf);
+        int affectedLines = stmt.executeUpdate();
+        return affectedLines == 1;
+    }
+
     /*public boolean movieEdit(Movie newMovie) throws SQLException {
         String sql = "UPDATE filmek SET (title = ?, category = ?, length = ?, rating = ?) WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);

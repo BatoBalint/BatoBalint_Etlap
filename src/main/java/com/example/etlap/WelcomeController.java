@@ -1,13 +1,11 @@
 package com.example.etlap;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -30,6 +28,10 @@ public class WelcomeController {
     private TableColumn<Etel, String> categoryCol;
     @FXML
     private TableColumn<Etel, Integer> priceCol;
+    @FXML
+    private Spinner<Integer> percentageSpinner;
+    @FXML
+    private Spinner<Integer> hufSpinner;
     private DB db;
     private List<Etel> etelList;
 
@@ -71,6 +73,36 @@ public class WelcomeController {
                 }
             }
         }
+    }
+
+    @FXML
+    private void percentageBtnClick() {
+        try {
+            boolean ok = db.percentageChange(percentageSpinner.getValue());
+            if (!ok) {
+                new Alert(Alert.AlertType.ERROR, "Valami okbol fogva nem sikerült frissiteni az adatokat", ButtonType.CLOSE).show();
+            } else {
+                loadDataToTable();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //new Alert(Alert.AlertType.NONE, precentageSpinner.getValue() + "", ButtonType.CLOSE).show();
+    }
+
+    @FXML
+    private void hufBtnClick() {
+        try {
+            boolean ok = db.hufChange(hufSpinner.getValue());
+            if (!ok) {
+                new Alert(Alert.AlertType.ERROR, "Valami okbol fogva nem sikerült frissiteni az adatokat", ButtonType.CLOSE).show();
+            } else {
+                loadDataToTable();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //new Alert(Alert.AlertType.NONE,  hufSpinner.getValue() + "", ButtonType.CLOSE).show();
     }
 
     @FXML

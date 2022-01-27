@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <VBox spacing="10.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.etlap.WelcomeController">
    <children>
       <HBox spacing="10.0">
@@ -17,6 +18,64 @@
             </Button>
          </children>
       </HBox>
+      <TitledPane animated="false" text="Áremelés">
+         <content>
+            <VBox>
+               <children>
+                  <HBox spacing="5.0">
+                     <children>
+                        <Spinner fx:id="percentageSpinner" editable="true">
+                           <valueFactory>
+                              <SpinnerValueFactory.IntegerSpinnerValueFactory min="-100" initialValue="0" max="99999" amountToStepBy="1"/>
+                           </valueFactory>
+                        </Spinner>
+                        <Label text="\%">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#percentageBtnClick" text="Emelés">
+                           <opaqueInsets>
+                              <Insets left="20.0" />
+                           </opaqueInsets>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox spacing="5.0">
+                     <children>
+                        <Spinner fx:id="hufSpinner" editable="true">
+                           <valueFactory>
+                              <SpinnerValueFactory.IntegerSpinnerValueFactory min="-99999" initialValue="1" max="99999" amountToStepBy="1"/>
+                           </valueFactory>
+                        </Spinner>
+                        <Label text="Ft">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#hufBtnClick" text="Emelés">
+                           <opaqueInsets>
+                              <Insets left="20.0" />
+                           </opaqueInsets>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </TitledPane>
       <HBox spacing="10.0">
          <children>
             <TableView fx:id="menuTable" onMouseClicked="#menuTableClicked" prefHeight="300.0">
