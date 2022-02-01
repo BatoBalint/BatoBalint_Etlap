@@ -5,6 +5,9 @@ import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public class AddFoodController {
     @FXML
     private Spinner<Integer> priceInput;
@@ -20,9 +23,14 @@ public class AddFoodController {
     public void initialize() {
         priceInput.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999));
 
-        categoryInput.getItems().add("előétel");
-        categoryInput.getItems().add("főétel");
-        categoryInput.getItems().add("desszert");
+        try {
+            List<String> kategoriak = new DB().getKategoria();
+            for (String k: kategoriak) {
+                categoryInput.getItems().add(k);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

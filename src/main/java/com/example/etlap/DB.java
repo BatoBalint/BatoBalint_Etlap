@@ -3,6 +3,7 @@ package com.example.etlap;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SplittableRandom;
 
 public class DB {
     Connection conn;
@@ -15,11 +16,11 @@ public class DB {
         List<Etel> etelList = new ArrayList<>();
 
         Statement stmt = conn.createStatement();
-        ResultSet result = stmt.executeQuery("SELECT * FROM etlap");
+        ResultSet result = stmt.executeQuery("SELECT etlap.id, etlap.nev, etlap.leiras, etlap.ar, kategoria.nev FROM etlap INNER JOIN kategoria ON etlap.kategoria_id = kategoria.id");
         while (result.next()) {
             int id = result.getInt("id");
             String name = result.getString("nev");
-            String category = result.getString("kategoria");
+            String category = result.getString("kategoria.nev");
             String desc = result.getString("leiras");
             int price = result.getInt("ar");
             Etel e = new Etel(id, name, category, desc, price);
@@ -27,6 +28,16 @@ public class DB {
         }
 
         return etelList;
+    }
+
+    public List<String> getKategoria() throws SQLException {
+        List<String> kategoriak = new ArrayList<>();
+        Statement stmt = conn.createStatement();
+        ResultSet result = stmt.executeQuery("SELECT nev FROM kategoria");
+        while (result.next()) {
+            kategoriak.add(result.getString("nev"));
+        }
+        return kategoriak;
     }
 
     public int addEtel(String nev, String kategoria, String leiras, int ar) throws SQLException {

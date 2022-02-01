@@ -23,9 +23,9 @@
                <children>
                   <HBox spacing="5.0">
                      <children>
-                        <Spinner fx:id="percentageSpinner" editable="true">
+                        <Spinner fx:id="percentageSpinner">
                            <valueFactory>
-                              <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="0" max="99999" min="-100" />
+                              <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="5" initialValue="5" max="50" min="5" />
                            </valueFactory>
                         </Spinner>
                         <Label text="\%">
@@ -51,9 +51,9 @@
                   </HBox>
                   <HBox spacing="5.0">
                      <children>
-                        <Spinner fx:id="hufSpinner" editable="true">
+                        <Spinner fx:id="hufSpinner">
                            <valueFactory>
-                              <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="0" max="99999" min="-99999" />
+                              <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="50" initialValue="50" max="3000" min="50" />
                            </valueFactory>
                         </Spinner>
                         <Label text="Ft">
