@@ -30,21 +30,23 @@ public class DB {
         return etelList;
     }
 
-    public List<String> getKategoria() throws SQLException {
-        List<String> kategoriak = new ArrayList<>();
+    public List<Kategoria> getKategoria() throws SQLException {
+        List<Kategoria> kategoriak = new ArrayList<>();
         Statement stmt = conn.createStatement();
-        ResultSet result = stmt.executeQuery("SELECT nev FROM kategoria");
+        ResultSet result = stmt.executeQuery("SELECT * FROM kategoria");
         while (result.next()) {
-            kategoriak.add(result.getString("nev"));
+            int id = result.getInt("id");
+            String nev = result.getString("nev");
+            kategoriak.add(new Kategoria(id, nev));
         }
         return kategoriak;
     }
 
-    public int addEtel(String nev, String kategoria, String leiras, int ar) throws SQLException {
-        String sql = "INSERT INTO etlap (nev, kategoria, leiras, ar) VALUES (?, ?, ?, ?)";
+    public int addEtel(String nev, int kategoria, String leiras, int ar) throws SQLException {
+        String sql = "INSERT INTO etlap (nev, kategoria_id, leiras, ar) VALUES (?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, nev);
-        stmt.setString(2, kategoria);
+        stmt.setInt(2, kategoria);
         stmt.setString(3, leiras);
         stmt.setInt(4, ar);
 

@@ -12,7 +12,7 @@ public class AddFoodController {
     @FXML
     private Spinner<Integer> priceInput;
     @FXML
-    private ComboBox<String> categoryInput;
+    private ComboBox<Kategoria> categoryInput;
     @FXML
     private TextField nameInput;
     @FXML
@@ -24,8 +24,8 @@ public class AddFoodController {
         priceInput.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999));
 
         try {
-            List<String> kategoriak = new DB().getKategoria();
-            for (String k: kategoriak) {
+            List<Kategoria> kategoriak = new DB().getKategoria();
+            for (Kategoria k: kategoriak) {
                 categoryInput.getItems().add(k);
             }
         } catch (SQLException e) {
@@ -40,7 +40,7 @@ public class AddFoodController {
             try {
                 DB db = new DB();
                 String name = nameInput.getText();
-                String category = categoryInput.getSelectionModel().getSelectedItem();
+                int category = categoryInput.getSelectionModel().getSelectedItem().getId();
                 String desc = descInput.getText();
                 int price = Integer.parseInt(priceInput.getValue().toString());
                 int affectedRows = db.addEtel(name, category, desc, price);
