@@ -78,36 +78,62 @@ public class WelcomeController {
     @FXML
     private void percentageBtnClick() {
         try {
-            boolean ok = db.percentageChange(percentageSpinner.getValue());
-            if (ok) {
-                new Alert(Alert.AlertType.ERROR, "Valami okbol fogva nem sikerült frissiteni az adatokat", ButtonType.CLOSE).show();
+            boolean ok = false;
+            if (menuTable.getSelectionModel().getSelectedIndex() == -1) {
+                Optional<ButtonType> answer = new Alert(Alert.AlertType.CONFIRMATION,
+                        "Jelenleg az összes sort szerkeszti, biztos benne?",
+                        ButtonType.OK, ButtonType.CANCEL).showAndWait();
+                if (answer.get() != ButtonType.OK) {
+                    return;
+                }
+                ok = db.percentageChange(percentageSpinner.getValue());
+            } else {
+                ok = db.percentageChange(percentageSpinner.getValue(), menuTable.getSelectionModel().getSelectedItem().getId());
+            }
+            if (!ok) {
+                new Alert(Alert.AlertType.ERROR, "Valami okbol fogva nem sikerült frissiteni az adato(ka)t", ButtonType.CLOSE).show();
             } else {
                 loadDataToTable();
+                windowClicked();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //new Alert(Alert.AlertType.NONE, precentageSpinner.getValue() + "", ButtonType.CLOSE).show();
+        percentageSpinner.getValueFactory().setValue(0);
     }
 
     @FXML
     private void hufBtnClick() {
         try {
-            boolean ok = db.hufChange(hufSpinner.getValue());
-            if (ok) {
+            boolean ok = false;
+            if (menuTable.getSelectionModel().getSelectedIndex() == -1) {
+                Optional<ButtonType> answer = new Alert(Alert.AlertType.CONFIRMATION,
+                        "Jelenleg az összes sort szerkeszti, biztos benne?",
+                        ButtonType.OK, ButtonType.CANCEL).showAndWait();
+                if (answer.get() != ButtonType.OK) {
+                    return;
+                }
+                ok = db.hufChange(hufSpinner.getValue());
+            } else {
+                ok = db.hufChange(hufSpinner.getValue(), menuTable.getSelectionModel().getSelectedItem().getId());
+            }
+            if (!ok) {
                 new Alert(Alert.AlertType.ERROR, "Valami okbol fogva nem sikerült frissiteni az adatokat", ButtonType.CLOSE).show();
             } else {
                 loadDataToTable();
+                windowClicked();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //new Alert(Alert.AlertType.NONE,  hufSpinner.getValue() + "", ButtonType.CLOSE).show();
+        hufSpinner.getValueFactory().setValue(0);
     }
 
     @FXML
     private void menuTableClicked() {
-        descriptionTxt.setText(menuTable.getSelectionModel().getSelectedItem().getDesc());
+        if (menuTable.getSelectionModel().getSelectedIndex() != -1) {
+            descriptionTxt.setText(menuTable.getSelectionModel().getSelectedItem().getDesc());
+        }
     }
 
     public void initialize() {
@@ -131,7 +157,13 @@ public class WelcomeController {
         }
     }
 
-    private void test() {
-        new Alert(Alert.AlertType.NONE, "test", ButtonType.CLOSE).show();
+    @FXML
+    private void windowClicked() {
+        menuTable.getSelectionModel().clearSelection();
+        descriptionTxt.setText("");
+    }
+
+    private void test(String text) {
+        new Alert(Alert.AlertType.NONE, text, ButtonType.CLOSE).show();
     }
 }

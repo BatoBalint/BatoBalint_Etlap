@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
-<VBox spacing="10.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.etlap.WelcomeController">
+<VBox onMouseClicked="#windowClicked" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.etlap.WelcomeController">
    <children>
       <HBox spacing="10.0">
          <children>
@@ -26,7 +25,7 @@
                      <children>
                         <Spinner fx:id="percentageSpinner" editable="true">
                            <valueFactory>
-                              <SpinnerValueFactory.IntegerSpinnerValueFactory min="-100" initialValue="0" max="99999" amountToStepBy="1"/>
+                              <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="0" max="99999" min="-100" />
                            </valueFactory>
                         </Spinner>
                         <Label text="\%">
@@ -54,7 +53,7 @@
                      <children>
                         <Spinner fx:id="hufSpinner" editable="true">
                            <valueFactory>
-                              <SpinnerValueFactory.IntegerSpinnerValueFactory min="-99999" initialValue="1" max="99999" amountToStepBy="1"/>
+                              <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="0" max="99999" min="-99999" />
                            </valueFactory>
                         </Spinner>
                         <Label text="Ft">

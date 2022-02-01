@@ -53,7 +53,16 @@ public class DB {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, precentage);
         int affectedLines = stmt.executeUpdate();
-        return affectedLines == 1;
+        return affectedLines != 0;
+    }
+
+    public boolean percentageChange(int precentage, int id) throws SQLException {
+        String sql = "UPDATE etlap SET ar = ar * ((100 + ?) / 100) WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, precentage);
+        stmt.setInt(2, id);
+        int affectedLines = stmt.executeUpdate();
+        return affectedLines != 0;
     }
 
     public boolean hufChange(int huf) throws SQLException {
@@ -61,7 +70,16 @@ public class DB {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, huf);
         int affectedLines = stmt.executeUpdate();
-        return affectedLines == 1;
+        return affectedLines != 0;
+    }
+
+    public boolean hufChange(int huf, int id) throws SQLException {
+        String sql = "UPDATE etlap SET ar = ar + ? WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, huf);
+        stmt.setInt(2, id);
+        int affectedLines = stmt.executeUpdate();
+        return affectedLines != 0;
     }
 
     /*public boolean movieEdit(Movie newMovie) throws SQLException {
