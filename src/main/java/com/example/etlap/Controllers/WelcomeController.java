@@ -221,13 +221,15 @@ public class WelcomeController {
         loadDataToCategoryTable();
 
         catChoiceBox.setOnAction(actionEvent -> {
-            if (catChoiceBox.getSelectionModel().getSelectedItem().getId() == -1) {
-                loadDataToMenuTable();
-            } else {
-                menuTable.getItems().clear();
-                for (Etel e: etelList) {
-                    if (e.getCategory().equals(catChoiceBox.getSelectionModel().getSelectedItem().getNev())) {
-                        menuTable.getItems().add(e);
+            if (catChoiceBox.getItems().size() != 0) {
+                if (catChoiceBox.getSelectionModel().getSelectedItem().getId() == -1) {
+                    loadDataToMenuTable();
+                } else {
+                    menuTable.getItems().clear();
+                    for (Etel e: etelList) {
+                        if (e.getCategory().equals(catChoiceBox.getSelectionModel().getSelectedItem().getNev())) {
+                            menuTable.getItems().add(e);
+                        }
                     }
                 }
             }
