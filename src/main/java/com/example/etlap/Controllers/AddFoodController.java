@@ -1,5 +1,7 @@
-package com.example.etlap;
+package com.example.etlap.Controllers;
 
+import com.example.etlap.DB;
+import com.example.etlap.Kategoria;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
@@ -80,9 +82,5 @@ public class AddFoodController {
         }
         hiba(hibak);
         return !error;
-    }
-
-    public void menuItemClick(ActionEvent actionEvent) {
-
     }
 }

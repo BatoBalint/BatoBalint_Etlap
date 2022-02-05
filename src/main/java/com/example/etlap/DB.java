@@ -42,6 +42,30 @@ public class DB {
         return kategoriak;
     }
 
+    public boolean hasKategoria(String categoryName) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet result = stmt.executeQuery("SELECT COUNT(*) FROM kategoria WHERE nev = \"" + categoryName + "\"");
+        result.next();
+        int count = result.getInt("count(*)");
+        return count == 1;
+    }
+
+    public int addKategoria(String nev) throws SQLException {
+        String sql = "INSERT INTO kategoria (nev) VALUES (?)";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, nev);
+
+        return stmt.executeUpdate();
+    }
+
+    public boolean deleteCategory(int id) throws SQLException {
+        String sql = "DELETE FROM kategoria WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, id);
+        int affectedLines = stmt.executeUpdate();
+        return affectedLines == 1;
+    }
+
     public int addEtel(String nev, int kategoria, String leiras, int ar) throws SQLException {
         String sql = "INSERT INTO etlap (nev, kategoria_id, leiras, ar) VALUES (?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(sql);

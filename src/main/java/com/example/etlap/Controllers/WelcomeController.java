@@ -1,5 +1,9 @@
-package com.example.etlap;
+package com.example.etlap.Controllers;
 
+import com.example.etlap.DB;
+import com.example.etlap.Etel;
+import com.example.etlap.EtlapApp;
+import com.example.etlap.Kategoria;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,7 +23,7 @@ public class WelcomeController {
     @FXML
     private Label descriptionTxt;
     @FXML
-    private Button newFoodBtn;
+    private Button newInstanceBtn;
     @FXML
     private Button deleteBtn;
     @FXML
@@ -32,20 +36,55 @@ public class WelcomeController {
     private Spinner<Integer> percentageSpinner;
     @FXML
     private Spinner<Integer> hufSpinner;
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private TableColumn<Kategoria, String> catTabCatCol;
+    @FXML
+    private TableView<Kategoria> catMenuTable;
     private DB db;
     private List<Etel> etelList;
+    private List<Kategoria> katList;
 
     @FXML
-    public void newFoodBtnClick() {
+    public void newInstanceBtnClick() {
+        String fxml = "";
+        String title = "";
+        switch (tabPane.getSelectionModel().getSelectedIndex()) {
+            case 0:
+                fxml = "add-food-view.fxml";
+                title = "Étel felvétel";
+                break;
+            case 1:
+                fxml = "add-category-view.fxml";
+                title = "Kategória felvétel";
+                break;
+            default:
+                break;
+        }
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(EtlapApp.class.getResource("add-food-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(EtlapApp.class.getResource(fxml));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load());
-            stage.setTitle("Étel felvétel");
+            stage.setTitle(title);
             stage.setScene(scene);
-            stage.setOnCloseRequest(windowEvent -> loadDataToTable());
-            stage.setOnHiding(windowEvent -> loadDataToTable());
+            stage.setOnCloseRequest(windowEvent -> {
+                switch (tabPane.getSelectionModel().getSelectedIndex()) {
+                    case 0: loadDataToMenuTable();
+                    break;
+                    case 1: loadDataToCategoryTable();
+                    break;
+                }
+            });
+            stage.setOnHiding(windowEvent -> {
+                switch (tabPane.getSelectionModel().getSelectedIndex()) {
+                    case 0: loadDataToMenuTable();
+                        break;
+                    case 1: loadDataToCategoryTable();
+                        break;
+                }
+            });
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,20 +93,53 @@ public class WelcomeController {
 
     @FXML
     public void deleteBtnClick() {
+        switch (tabPane.getSelectionModel().getSelectedIndex()) {
+            case 0:
+                foodDelete();
+                break;
+            case 1:
+                categoryDelete();
+                break;
+        }
+    }
+
+    private void foodDelete() {
         int selectedIndex = menuTable.getSelectionModel().getSelectedIndex();
         if (selectedIndex == -1) {
             new Alert(Alert.AlertType.NONE, "Elöbb válasz ki egy ételt", ButtonType.CLOSE).show();
         } else {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                     "Biztos hogy törölni szeretné az ételt? (" +
-                    menuTable.getSelectionModel().getSelectedItem().getName() +
-                    ")");
+                            menuTable.getSelectionModel().getSelectedItem().getName() +
+                            ")");
             confirm.setTitle("Étel törlése");
             Optional<ButtonType> result = confirm.showAndWait();
             if (result.get() == ButtonType.OK) {
                 try {
                     db.deleteEtel(menuTable.getSelectionModel().getSelectedItem().getId());
-                    loadDataToTable();
+                    loadDataToMenuTable();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void categoryDelete() {
+        int selectedIndex = catMenuTable.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            new Alert(Alert.AlertType.NONE, "Elöbb válasz ki egy kategóriát", ButtonType.CLOSE).show();
+        } else {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Biztos hogy törölni szeretné a kategóriát? (" +
+                            catMenuTable.getSelectionModel().getSelectedItem().getNev() +
+                            ")");
+            confirm.setTitle("Kategória törlése");
+            Optional<ButtonType> result = confirm.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                try {
+                    db.deleteCategory(catMenuTable.getSelectionModel().getSelectedItem().getId());
+                    loadDataToCategoryTable();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -93,7 +165,7 @@ public class WelcomeController {
             if (!ok) {
                 new Alert(Alert.AlertType.ERROR, "Valami okbol fogva nem sikerült frissiteni az adato(ka)t", ButtonType.CLOSE).show();
             } else {
-                loadDataToTable();
+                loadDataToMenuTable();
                 windowClicked();
             }
         } catch (SQLException e) {
@@ -120,7 +192,7 @@ public class WelcomeController {
             if (!ok) {
                 new Alert(Alert.AlertType.ERROR, "Valami okbol fogva nem sikerült frissiteni az adatokat", ButtonType.CLOSE).show();
             } else {
-                loadDataToTable();
+                loadDataToMenuTable();
                 windowClicked();
             }
         } catch (SQLException e) {
@@ -141,10 +213,12 @@ public class WelcomeController {
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        loadDataToTable();
+        catTabCatCol.setCellValueFactory(new PropertyValueFactory<>("nev"));
+
+        loadDataToMenuTable();
     }
 
-    private void loadDataToTable() {
+    private void loadDataToMenuTable() {
         try {
             db = new DB();
             etelList = db.getEtlap();
@@ -157,10 +231,41 @@ public class WelcomeController {
         }
     }
 
+    private void loadDataToCategoryTable() {
+        try {
+            db = new DB();
+            katList = db.getKategoria();
+            catMenuTable.getItems().clear();
+            for (Kategoria k: katList) {
+                catMenuTable.getItems().add(k);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void windowClicked() {
         menuTable.getSelectionModel().clearSelection();
+        catMenuTable.getSelectionModel().clearSelection();
         descriptionTxt.setText("");
+    }
+
+    @FXML
+    private void tabPaneClicked() {
+        int tab = tabPane.getSelectionModel().getSelectedIndex();
+        switch (tab) {
+            case 0:
+                newInstanceBtn.setText("Új étel felvétele");
+                loadDataToMenuTable();
+                break;
+            case 1:
+                newInstanceBtn.setText("Új kategória felvétele");
+                loadDataToCategoryTable();
+                break;
+            default:
+                break;
+        }
     }
 
     private void test(String text) {
