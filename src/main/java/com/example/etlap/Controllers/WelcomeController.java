@@ -45,6 +45,8 @@ public class WelcomeController {
     private DB db;
     private List<Etel> etelList;
     private List<Kategoria> katList;
+    @FXML
+    private ChoiceBox<Kategoria> catChoiceBox;
 
     @FXML
     public void newInstanceBtnClick() {
@@ -216,6 +218,20 @@ public class WelcomeController {
         catTabCatCol.setCellValueFactory(new PropertyValueFactory<>("nev"));
 
         loadDataToMenuTable();
+        loadDataToCategoryTable();
+
+        catChoiceBox.setOnAction(actionEvent -> {
+            if (catChoiceBox.getSelectionModel().getSelectedItem().getId() == -1) {
+                loadDataToMenuTable();
+            } else {
+                menuTable.getItems().clear();
+                for (Etel e: etelList) {
+                    if (e.getCategory().equals(catChoiceBox.getSelectionModel().getSelectedItem().getNev())) {
+                        menuTable.getItems().add(e);
+                    }
+                }
+            }
+        });
     }
 
     private void loadDataToMenuTable() {
@@ -236,8 +252,11 @@ public class WelcomeController {
             db = new DB();
             katList = db.getKategoria();
             catMenuTable.getItems().clear();
+            catChoiceBox.getItems().clear();
+            catChoiceBox.getItems().add(new Kategoria(-1, ""));
             for (Kategoria k: katList) {
                 catMenuTable.getItems().add(k);
+                catChoiceBox.getItems().add(k);
             }
         } catch (SQLException e) {
             e.printStackTrace();
